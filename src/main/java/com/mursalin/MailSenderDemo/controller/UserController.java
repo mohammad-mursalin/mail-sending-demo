@@ -14,9 +14,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/registration")
-    public ResponseEntity<?> userRegistration(@RequestBody User user) {
-        userService.register(user);
+    public User userRegistration(@RequestBody User user) {
+        return userService.register(user);
     }
 
+    @GetMapping
+    public ResponseEntity<?> verifyToken(@RequestParam String token) {
 
+        return userService.verifyToken(token);
+    }
 }
