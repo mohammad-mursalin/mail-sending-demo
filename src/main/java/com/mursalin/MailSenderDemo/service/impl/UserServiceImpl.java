@@ -12,22 +12,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private ConfirmationRepository confirmationRepository;
     private MailService mailService;
 
+    public UserServiceImpl(UserRepository userRepository, ConfirmationRepository confirmationRepository, MailService mailService) {
+        this.userRepository = userRepository;
+        this.confirmationRepository = confirmationRepository;
+        this.mailService = mailService;
+    }
+
     @Override
     public User register(User user) {
 
-        if(!userRepository.existByEmailIgnoreCase(user.getEmail())) {
+        if(!userRepository.existsByEmailIgnoreCase(user.getEmail())) {
             user.setEnable(false);
             Confirmation confirmation = new Confirmation(user);
+            userRepository.save(user);
             confirmationRepository.save(confirmation);
             mailService.sendSimpleMail(user.getName(), user.getEmail(),confirmation.getToken());
-            return userRepository.save(user);
+            return user;
         }
         throw new RuntimeException("user exist by this email");
     }

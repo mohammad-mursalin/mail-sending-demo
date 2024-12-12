@@ -25,8 +25,35 @@ public class Confirmation {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public Confirmation() {
+    }
+
     public Confirmation(User user) {
         this.user = user;
         this.token = UUID.randomUUID().toString();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

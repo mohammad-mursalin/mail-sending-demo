@@ -8,17 +8,22 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
 
     private final JavaMailSender mailSender;
     public static final String NEW_USER_ACCOUNT_VERIFICATION = "new user account verification";
 
-    @Value("$(spring.mail.username)")
+    public MailServiceImpl(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
+    @Value("${spring.mail.username}")
     private String emailFrom;
 
-    @Value("$(spring.mail.verify.host)")
+    @Value("${spring.mail.verify.host}")
     private String host;
+
 
     @Override
     public void sendSimpleMail(String name, String emailTo, String token) {
